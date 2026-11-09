@@ -5,7 +5,12 @@
 App para analizar un problema de calidad **hasta encontrar su causa raíz** y asegurarse de
 que no vuelva a pasar. Se usa desde el celular o la tablet, en la planta y aunque no haya señal.
 
-**Abrir la app:** https://roca-byte.github.io/causa-raiz/
+**Abrir la app:** https://roca-byte.github.io/causa-raiz/ · [Video (2:25)](docs/video/causa-raiz-demo.mp4) · [Guía de uso](docs/GUIA.md)
+
+<p align="center"><img src="docs/img/demo.gif" alt="Recorrido: un caso cerrado con su Ishikawa, 5 por qué y el Pareto" width="280"></p>
+
+> **¿Querés probarla sin cargar nada?** Abrí la app y tocá **“Ver casos de ejemplo”**: aparecen
+> casos inventados en todos los estados, para recorrerlos y ver el Pareto. Se borran con un toque.
 
 ## Para qué sirve
 
@@ -33,6 +38,8 @@ Cada problema es un **caso** y se resuelve en 6 pasos. La app te muestra cuáles
 
 La app no te deja cerrar un caso sin causa raíz o con acciones pendientes, y guarda un
 **historial** con fecha y hora de cada cambio importante.
+
+El paso a paso con capturas está en la **[guía de uso](docs/GUIA.md)**.
 
 ## Qué más podés hacer
 

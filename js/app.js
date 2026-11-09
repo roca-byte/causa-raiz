@@ -143,11 +143,17 @@
     const cont = $('#lista');
     if (!Store.casos().length) {
       cont.innerHTML = `<div class="vacio"><h2>Todavía no hay casos</h2><p>Un caso es un problema que querés analizar hasta la causa raíz:
-        un desvío que se repite, un reclamo o una no conformidad. Tocá <strong>+ Nuevo caso</strong> para empezar.</p></div>`;
+        un desvío que se repite, un reclamo o una no conformidad. Tocá <strong>+ Nuevo caso</strong> para empezar.</p>
+        <p>¿Querés ver primero cómo queda un análisis terminado?</p>
+        <button type="button" class="btn btn-ghost btn-block" data-act="cargar-ejemplos">Ver casos de ejemplo</button></div>`;
       return;
     }
-    if (!lista.length) { cont.innerHTML = '<p class="muted centro">No hay casos con ese filtro.</p>'; return; }
-    cont.innerHTML = `<ul class="log">` + lista.map(c => {
+    // Aviso fijo mientras haya ejemplos: que nadie los confunda con casos reales.
+    const aviso = Store.hayEjemplos() ? `<div class="aviso-ejemplo"><p><strong>Casos de ejemplo</strong> con datos inventados.
+      Probá abrirlos, editarlos o mirar el Pareto.</p>
+      <button type="button" class="btn btn-ghost btn-sm" data-act="borrar-ejemplos">Borrar ejemplos</button></div>` : '';
+    if (!lista.length) { cont.innerHTML = aviso + '<p class="muted centro">No hay casos con ese filtro.</p>'; return; }
+    cont.innerHTML = aviso + `<ul class="log">` + lista.map(c => {
       const est = Rca.estado(c, hoy);
       const r = Rca.resumenAcciones(c, hoy);
       const info = [fc(c.fecha), c.area, c.categoria].filter(Boolean).map(esc).join(' · ');
@@ -545,6 +551,14 @@
       case 'borrar-caso':
         if (confirm(`Se borra el caso ${c.numero} con todo su análisis. No se puede deshacer. ¿Borrar?`)) {
           if (Store.borrarCaso(c.id)) { ui.casoId = null; render(); toast('Caso borrado'); } else toast(SIN_ESPACIO);
+        }
+        break;
+      case 'cargar-ejemplos':
+        if (Store.cargarEjemplos()) { ui.filtro = 'todos'; render(); toast('Se cargaron casos de ejemplo'); } else toast(SIN_ESPACIO);
+        break;
+      case 'borrar-ejemplos':
+        if (confirm('Se borran los casos de ejemplo. Tus casos (si cargaste alguno) quedan. ¿Borrar?')) {
+          if (Store.borrarEjemplos()) { ui.filtro = 'abiertos'; render(); toast('Ejemplos borrados'); } else toast(SIN_ESPACIO);
         }
         break;
       case 'cerrar-sheet': cerrarSheet(); break;

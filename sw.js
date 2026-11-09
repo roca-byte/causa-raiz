@@ -8,7 +8,7 @@
  *
  * Los DATOS (casos) no se guardan acá: viven en localStorage y no se tocan.
  */
-const VERSION = 'causa-raiz-v1';
+const VERSION = 'causa-raiz-v2';
 
 // RUTAS RELATIVAS: en GitHub Pages la app vive en un subdirectorio, y una ruta como
 // '/index.html' apuntaría a la raíz del dominio.
@@ -17,6 +17,7 @@ const ARCHIVOS = [
   './index.html',
   './css/styles.css',
   './js/rca.js',
+  './js/ejemplo.js',
   './js/marca.js',
   './js/store.js',
   './js/graficos.js',
