@@ -162,6 +162,11 @@ label.check input { width: 26px; height: 26px; min-height: 0; margin: 0; flex: n
 .vacio { background: var(--card); border: 1.5px dashed var(--line-strong); border-radius: var(--r-md); padding: 18px; }
 .vacio h2 { font-size: 1.1rem; }
 .vacio p { color: var(--muted); margin: 8px 0 0; }
+.vacio .btn { margin-top: 12px; }
+/* Aviso de casos de ejemplo: arriba de la lista mientras existan. */
+.aviso-ejemplo { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding: 12px; border-radius: var(--r-md);
+  background: var(--brand-soft); border: 1px solid var(--line); }
+.aviso-ejemplo p { flex: 1; margin: 0; font-size: .9rem; }
 
 .pill { display: inline-block; padding: 3px 9px; border-radius: 99px; font-size: .76rem; font-weight: 700; white-space: nowrap; }
 .pill-analisis { background: var(--brand-soft); color: var(--link); }

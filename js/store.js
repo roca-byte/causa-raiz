@@ -89,6 +89,23 @@ const Store = (() => {
     return guardar();
   }
 
+  // ---------- casos de ejemplo ----------
+  // Solo se cargan con la app vacía: si ya hay casos reales, los números de los ejemplos
+  // (RCA-AAAA-001…) chocarían con los del usuario.
+  function cargarEjemplos() {
+    if (state.casos.length) return false;
+    state.casos = Ejemplo.casos(Rca.hoy()).map(c => Object.assign(c, { id: uid() }));
+    if (guardar()) return true;
+    state.casos = [];
+    return false;
+  }
+  function hayEjemplos() { return state.casos.some(c => c.ejemplo); }
+  // Borra SOLO los ejemplos: si el usuario ya cargó casos propios, esos quedan.
+  function borrarEjemplos() {
+    state.casos = state.casos.filter(c => !c.ejemplo);
+    return guardar();
+  }
+
   function nuevaAccion() {
     return { id: uid(), tipo: 'correctiva', texto: '', responsable: state.config.analista || '', plazo: '', hecha: false, fechaHecha: '' };
   }
@@ -115,5 +132,5 @@ const Store = (() => {
     return state.casos.length;
   }
 
-  return { getConfig, setConfig, casos, caso, crearCaso, guardarCaso, borrarCaso, nuevaAccion, exportar, revisarRespaldo, importar };
+  return { getConfig, setConfig, casos, caso, crearCaso, guardarCaso, borrarCaso, cargarEjemplos, hayEjemplos, borrarEjemplos, nuevaAccion, exportar, revisarRespaldo, importar };
 })();

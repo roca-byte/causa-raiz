@@ -10,7 +10,7 @@
 ## Mismo modelo que sus otras apps (controlLinea, mash-check)
 Scripts clásicos sin módulos ni build, un objeto global por archivo, interfaz en español
 rioplatense (voseo), botones de 48 px, funciona sin señal, datos en el dispositivo.
-Orden de carga: `rca → marca → store → graficos → report → app`.
+Orden de carga: `rca → ejemplo → marca → store → graficos → report → app`.
 
 ## Reglas
 - Reglas de negocio solo en `js/rca.js` (funciones puras, con pruebas en `tests/rca.test.js`).
@@ -24,6 +24,17 @@ Orden de carga: `rca → marca → store → graficos → report → app`.
 - Comentarios en español explicando el porqué. Nada de features no pedidas: avisar si un
   pedido excede el MVP.
 
+## Casos de ejemplo
+- `js/ejemplo.js` (global `Ejemplo`, función pura): casos inventados con `ejemplo: true`.
+  Datos SIEMPRE ficticios (nada de empresas, lotes o códigos reales). Si cambia la forma de un
+  caso en `rca.js`, actualizar también los ejemplos y `tests/ejemplo.test.js`.
+
+## Guía y demo
+- `docs/GUIA.md` es la guía para usuarios, con capturas de `docs/img/`.
+- Si cambia algo visible, regenerar capturas y GIF con `node tools/demo.js` y el video con
+  `node tools/video.js` (usan los casos de ejemplo), y revisar que la guía siga diciendo lo
+  que la app hace. Para correrlos: `NODE_PATH=$(npm root -g)` (Playwright global).
+
 ## Fuera del MVP (decidido, no implementado)
 - Fotos de evidencia (pediría pasar de localStorage a IndexedDB).
 - Importar desvíos desde qualityos / calidad-no-conformidades.
@@ -33,4 +44,6 @@ Orden de carga: `rca → marca → store → graficos → report → app`.
 ```
 node --test tests/*.test.js
 node tests/e2e.js [carpeta-capturas]
+node tools/demo.js     # capturas + GIF de la guía
+node tools/video.js    # video MP4
 ```

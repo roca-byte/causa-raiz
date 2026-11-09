@@ -194,6 +194,30 @@ function ok(cond, msg) { console.log((cond ? '  ✔ ' : '  ✘ ') + msg); if (!c
   ok((await page.textContent('.toast')).includes('10 casos'), 'restaura el respaldo (y rechazó el de otra app)');
   await foto('08-ajustes');
 
+  // ---- Casos de ejemplo: solo con la app vacía, y se borran sin tocar los reales ----
+  await page.click('[data-tab="casos"]');
+  ok(!(await page.isVisible('[data-act="cargar-ejemplos"]')), 'con casos propios no ofrece ejemplos');
+  await page.evaluate(() => localStorage.removeItem('causaRaiz.v1'));
+  await page.reload();
+  await page.click('[data-act="cargar-ejemplos"]');
+  await page.waitForSelector('.aviso-ejemplo');
+  const nEj = await page.locator('#lista .log-row').count();
+  ok(nEj === 10, 'carga 10 casos de ejemplo y avisa que son inventados (' + nEj + ')');
+  await page.click('[data-act="nuevo"]');
+  await page.fill('[name="titulo"]', 'Caso propio');
+  await page.selectOption('[name="categoria"]', 'Contaminación');
+  await guardar();
+  await page.waitForSelector('.case-head');
+  await page.click('[data-act="volver"]');
+  await page.click('[data-act="borrar-ejemplos"]');
+  await page.click('[data-act="filtro"][data-v="todos"]');
+  const quedan = await page.locator('#lista .log-row').allTextContents();
+  ok(quedan.length === 1 && quedan[0].includes('Caso propio') && !(await page.isVisible('.aviso-ejemplo')), 'borrar ejemplos deja solo el caso propio');
+  await page.evaluate(() => localStorage.removeItem('causaRaiz.v1'));
+  await page.click('[data-tab="ajustes"]');
+  await page.setInputFiles('#inImport', archivo);
+  await page.waitForSelector('.toast:not([hidden])');
+
   // ---- Modo oscuro ----
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.click('[data-tab="casos"]');

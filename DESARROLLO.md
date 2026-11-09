@@ -18,18 +18,28 @@ hechos a mano, sin librerías. Datos en `localStorage` (clave `causaRaiz.v1`). S
 ├── css/styles.css      # Estilos QualityOS, gráficos e impresión A4
 ├── js/
 │   ├── rca.js          # Reglas puras: estado, eficacia, Pareto, CSV, numeración (Rca)
+│   ├── ejemplo.js      # Casos de ejemplo inventados, calculados desde la fecha de hoy (Ejemplo)
 │   ├── marca.js        # Empresa y logo (Marca)
 │   ├── store.js        # Datos en localStorage y respaldo (Store)
 │   ├── graficos.js     # SVG del Ishikawa y del Pareto (Graficos)
 │   ├── report.js       # Informe del caso, informe del Pareto y texto para compartir (Report)
 │   └── app.js          # Pantallas, formularios y eventos
 ├── icons/              # Íconos de la suite
+├── docs/
+│   ├── GUIA.md         # Guía de uso para usuarios, con capturas
+│   ├── img/            # Capturas de la guía y demo.gif (las genera tools/demo.js)
+│   └── video/          # causa-raiz-demo.mp4 (lo genera tools/video.js)
+├── tools/
+│   ├── servidor.js     # Servidor local para los dos scripts de abajo
+│   ├── demo.js         # Genera las capturas y el GIF de la guía
+│   └── video.js        # Graba el video de demostración (MP4)
 └── tests/
     ├── rca.test.js     # Pruebas de las reglas (Node)
+    ├── ejemplo.test.js # Pruebas de los casos de ejemplo (Node)
     └── e2e.js          # Recorrido completo en Chromium (Playwright)
 ```
 
-Orden de carga de los scripts: `rca` → `marca` → `store` → `graficos` → `report` → `app`.
+Orden de carga de los scripts: `rca` → `ejemplo` → `marca` → `store` → `graficos` → `report` → `app`.
 
 ## Cómo funciona por dentro
 
@@ -41,6 +51,9 @@ Orden de carga de los scripts: `rca` → `marca` → `store` → `graficos` → 
   sin causa raíz no entran. Si hay más de 10 categorías, las chicas se juntan en "Otras".
 - El **CSV** usa `;` como separador y BOM UTF-8 (lo que espera el Excel en español) y
   neutraliza celdas que empiezan con `= + - @` para que Excel no las tome como fórmulas.
+- Los **casos de ejemplo** (`Ejemplo.casos(hoy)`) llevan `ejemplo: true`. Solo se ofrecen con
+  la app vacía (para que su numeración no choque con casos reales) y **Borrar ejemplos**
+  borra solo esos. Sus fechas se calculan hacia atrás desde hoy, sin salir del año en curso.
 - El **respaldo** es un JSON `{ app: 'causa-raiz', version: 1, config, casos }`. Restaurar
   reemplaza todo y guarda lo anterior en `causaRaiz.v1.anterior`; un archivo de otra app se rechaza.
 
@@ -58,6 +71,18 @@ Abrir `http://localhost:8000`.
 node --test tests/*.test.js      # reglas
 node tests/e2e.js [carpeta]      # navegador real; carpeta opcional para capturas y PDF
 ```
+
+Playwright no está en el repo (no hay `package.json`): se instala aparte, por ejemplo
+`npm i -g playwright && npx playwright install chromium`, y se corre con
+`NODE_PATH=$(npm root -g)`.
+
+## Guía, GIF y video
+
+Las capturas de la guía y el GIF se regeneran con `node tools/demo.js`, y el video con
+`node tools/video.js` (Playwright y ffmpeg). Usan los casos de ejemplo, con datos inventados,
+y el reloj fijo en el 11/11/2026 para que salgan iguales cada vez. Conviene correrlos cada
+vez que cambia algo visible de la app y revisar que `docs/GUIA.md` siga diciendo lo que la
+app hace.
 
 ## Publicar en GitHub Pages
 
